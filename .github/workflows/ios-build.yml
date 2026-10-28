@@ -1,9 +1,7 @@
 name: iOS Build & Tests
 
 on:
-  push:
-    branches: [main]
-  pull_request:
+  # Nur von Hand (wie LeanGymLog E-030, 2026-10-28): gebaut wird am Mac, Actions nur auf Riccos Ansage.
   workflow_dispatch:
 
 concurrency:

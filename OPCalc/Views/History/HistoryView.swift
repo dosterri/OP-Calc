@@ -88,6 +88,8 @@ private struct HistoryRow: View {
         .padding(.vertical, 6)
         .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(record.input.linearText) \(record.isExact ? "gleich" : "ungefähr") \(record.resultText)")
+        .accessibilityLabel(record.input.linearText + " " + relation + " " + record.resultText)
     }
+    // Ternär außerhalb der Interpolation (Leitfaden §6, Typprüfzeit)
+    private var relation: String { record.isExact ? "gleich" : "ungefähr" }
 }

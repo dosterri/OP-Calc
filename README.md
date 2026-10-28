@@ -41,9 +41,11 @@ Der Ordner `OPCalc/` ist ein **synchronisierter Ordner** (Xcode 16, objectVersio
 neue Dateien werden automatisch ins Projekt aufgenommen, die `project.pbxproj` muss nicht angepasst werden.
 Gleiches gilt für `OPCalcTests/`.
 
-## Build über GitHub Actions
+## Build über GitHub Actions (nur noch Rückfall)
 
-Der Workflow `.github/workflows/ios-build.yml` läuft bei jedem Push auf `main`:
+> Seit 2026-10-28 wird am Mac gebaut und per Kabel installiert (`03 Code/ENTWICKLUNGSLEITFADEN.md` §1). Der Workflow startet nur noch von Hand, auf Riccos Ansage.
+
+Der Workflow `.github/workflows/ios-build.yml` (von Hand gestartet):
 
 1. Build für den iOS-Simulator (inkl. Test-Target)
 2. Unsignierter Build für echte iPhones → **IPA als Artifact `OPCalc-ipa`**

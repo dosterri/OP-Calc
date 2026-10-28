@@ -15,10 +15,11 @@ struct Monomial: Hashable, Codable, Sendable {
     func times(_ other: Monomial) throws -> (factor: Int, monomial: Monomial) {
         let g = integerGCD(radicand, other.radicand)
         let (product, overflow) = (radicand / g).multipliedReportingOverflow(by: other.radicand / g)
-        if overflow { throw MathError.notExact }
-        return (g, Monomial(radicand: product,
-                            piExponent: piExponent + other.piExponent,
-                            eExponent: eExponent + other.eExponent))
+        // Exponenten mit Überlaufprüfung addieren – „+“ würde bei Überlauf abstürzen.
+        let (piSum, piOverflow) = piExponent.addingReportingOverflow(other.piExponent)
+        let (eSum, eOverflow) = eExponent.addingReportingOverflow(other.eExponent)
+        if overflow || piOverflow || eOverflow { throw MathError.notExact }
+        return (g, Monomial(radicand: product, piExponent: piSum, eExponent: eSum))
     }
 
     var doubleValue: Double {
@@ -158,9 +159,13 @@ struct ExactValue: Hashable, Codable, Sendable {
             guard n <= 100_000 else { throw MathError.tooLarge }
             let m = term.monomial
             let coefficient = try term.coefficient.power(n) * Rational(m.radicand).power(n / 2)
+            // Verschachtelte Potenzen wie ((π^100000)^100000)^… würden „*“ überlaufen lassen (Absturz).
+            let (piExponent, piOverflow) = m.piExponent.multipliedReportingOverflow(by: n)
+            let (eExponent, eOverflow) = m.eExponent.multipliedReportingOverflow(by: n)
+            if piOverflow || eOverflow { throw MathError.tooLarge }
             let monomial = Monomial(radicand: n % 2 == 1 ? m.radicand : 1,
-                                    piExponent: m.piExponent * n,
-                                    eExponent: m.eExponent * n)
+                                    piExponent: piExponent,
+                                    eExponent: eExponent)
             return ExactValue(terms: [monomial: coefficient])
         }
 
