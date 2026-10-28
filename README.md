@@ -54,14 +54,18 @@ Der Workflow `.github/workflows/ios-build.yml` (von Hand gestartet):
 
 Die IPA wird vor den Tests gebaut – du bekommst sie also auch dann, wenn ein Test rot ist.
 
-## Aufs iPhone (Sideloadly, kostenlose Apple-ID)
+## Bauen am Mac
+Im Projektordner `~/Dev/OP Calc`:
+```bash
+bash "03 Code/tools/mac/mac_build.sh" alles
+```
+Prüfskripte, Simulator-Build, Unit-Tests und unsignierter Gerätebuild; Logs in `build/logs/`.
 
-1. Auf GitHub im Repository **Actions** öffnen, den neuesten grünen Lauf anklicken.
-2. Unten bei **Artifacts** auf **OPCalc-ipa** klicken und die ZIP-Datei herunterladen.
-3. ZIP entpacken → `OPCalc.ipa`.
-4. iPhone per Kabel anschließen, **Sideloadly** starten, die IPA hineinziehen, Apple-ID eintragen, **Start**.
-5. Auf dem iPhone: *Einstellungen → Allgemein → VPN und Geräteverwaltung* → deiner Apple-ID vertrauen.
-6. Nach 7 Tagen läuft die Signatur ab → Schritt 4 wiederholen (der Verlauf bleibt erhalten).
+Aufs iPhone per Kabel (Kennung aus `xcrun devicectl list devices`, Team-ID aus `~/.leangymlog-team-id`):
+```bash
+APP_GERAET=<Kennung> APP_INSTALLIEREN=ja bash "03 Code/tools/mac/mac_build.sh" signiert
+```
+Die IPA aus dem Rückfall-Workflow oben kann weiterhin per Sideloadly installiert werden.
 
 ## Grenzen (bewusst)
 
