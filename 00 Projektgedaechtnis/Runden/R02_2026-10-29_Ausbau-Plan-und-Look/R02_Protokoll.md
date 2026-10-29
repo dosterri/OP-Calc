@@ -43,6 +43,9 @@ Ricco 2026-10-29: „Kannst du die App so anpassen, dass sie aussieht wie der Ap
 - Nicht geprüft: echtes iPhone, iPhone SE, Bildrate beim 3D-Drehen auf dem Gerät (AK-06 K3).
 - Git-Stand: Zweig `entwicklung`, Commit `AK-02–AK-06: …`.
 
+### 3 · Aufs iPhone (2026-10-29 12:03)
+- Ricco: „Ja, aufs iPhone“. `mac_build.sh signiert` auf „iPhone von Ricco“ (iPhone 16): grün, installiert und gestartet (Verifikation). Bedienung auf dem Gerät durch Ricco steht aus (OP-004, OP-007).
+
 ## Übergabeblock an R03 (ersetzt den obigen)
 - Stand: AK-01 bis AK-06 fertig auf `entwicklung`, Build und 151 Tests grün, im Simulator bedient.
 - Nächster Schritt: per Kabel aufs iPhone, alle Bereiche anfassen (OP-002, OP-004, OP-007); danach `entwicklung` nach `main`.
