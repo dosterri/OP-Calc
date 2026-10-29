@@ -126,6 +126,9 @@ final class CalculatorModel {
             evaluate(approximately: false, context: context)
         case .approximate:
             evaluate(approximately: true, context: context)
+        case .modeMenu:
+            // Das Menü öffnet die Tastatur selbst; hier gibt es nichts zu tun.
+            break
         }
 
         if key.returnsToBasicLayer { layer = .basic }

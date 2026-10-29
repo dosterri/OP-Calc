@@ -1,16 +1,18 @@
 import SwiftUI
 
-/// Die eigene Rechner-Tastatur: Navigationsleiste oben, darunter 5 × 6 Tasten.
-/// Ebene „123“ für Grundrechnen, Ebene „f(x)“ für Funktionen (springt nach einer Eingabe zurück).
+/// Die eigene Rechner-Tastatur im Stil des Apple-Rechners (E-005): Navigationsleiste oben,
+/// darunter 5 × 6 runde Tasten. Ebene „123“ für Grundrechnen, Ebene „f(x)“ für Funktionen
+/// (springt nach einer Eingabe zurück). Unten links öffnet die Modus-Taste das Menü der Bereiche (E-006).
 struct KeyboardView: View {
     let layer: CalculatorKey.Layer
     let angleMode: AngleMode
     let isSelecting: Bool
+    @Binding var mode: AppMode
     let onKey: (CalculatorKey) -> Void
 
     private static let navigationKeys: [CalculatorKey] = [.left, .right, .up, .down, .toggleSelection, .undo, .redo]
 
-    private static let bottomRow: [CalculatorKey] = [.approximate, .digit("0"), .decimalSeparator, .timesTenPower, .op(.plus), .equals]
+    private static let bottomRow: [CalculatorKey] = [.modeMenu, .digit("0"), .decimalSeparator, .approximate, .op(.plus), .equals]
 
     private static let basicRows: [[CalculatorKey]] = [
         [.switchLayer, .square, .power, .squareRoot, .fraction, .delete],
@@ -24,40 +26,49 @@ struct KeyboardView: View {
         [.switchLayer, .nthRoot, .expPower, .tenPower, .absolute, .delete],
         [.function(.sin), .function(.cos), .function(.tan), .function(.ln), .function(.log), .clear],
         [.function(.asin), .function(.acos), .function(.atan), .factorial, .inverse, .ans],
-        [.constant(.pi), .constant(.e), .parentheses, .toggleAngleMode, .fraction, .toggleDecimal],
+        [.constant(.pi), .constant(.e), .parentheses, .toggleAngleMode, .timesTenPower, .toggleDecimal],
         bottomRow,
     ]
 
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 10) {
             HStack(spacing: 6) {
                 ForEach(Self.navigationKeys, id: \.self) { key in
                     KeyButton(key: key, label: label(for: key), style: .navigation,
                               isHighlighted: key == .toggleSelection && isSelecting) {
                         onKey(key)
                     }
-                    .frame(height: 38)
+                    .frame(height: 32)
                 }
             }
 
-            Grid(horizontalSpacing: 8, verticalSpacing: 8) {
+            Grid(horizontalSpacing: 8, verticalSpacing: 10) {
                 ForEach(Array(rows.enumerated()), id: \.offset) { _, row in
                     GridRow {
                         ForEach(row, id: \.self) { key in
-                            KeyButton(key: key, label: label(for: key), style: style(for: key),
-                                      isHighlighted: key == .switchLayer && layer == .functions) {
-                                onKey(key)
-                            }
-                            .frame(minHeight: 46, maxHeight: 60)
-                            // ⌫ lange drücken = alles löschen (bei allen anderen Tasten deaktiviert)
-                            .simultaneousGesture(
-                                LongPressGesture(minimumDuration: 0.5).onEnded { _ in onKey(.clear) },
-                                including: key == .delete ? .all : .subviews
-                            )
+                            keyView(key)
+                                .frame(minHeight: 46, maxHeight: 60)
                         }
                     }
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private func keyView(_ key: CalculatorKey) -> some View {
+        if key == .modeMenu {
+            ModeMenuKey(mode: $mode)
+        } else {
+            KeyButton(key: key, label: label(for: key), style: style(for: key),
+                      isHighlighted: key == .switchLayer && layer == .functions) {
+                onKey(key)
+            }
+            // ⌫ lange drücken = alles löschen (bei allen anderen Tasten deaktiviert)
+            .simultaneousGesture(
+                LongPressGesture(minimumDuration: 0.5).onEnded { _ in onKey(.clear) },
+                including: key == .delete ? .all : .subviews
+            )
         }
     }
 
@@ -111,6 +122,7 @@ struct KeyboardView: View {
         case .switchLayer: return .text(layer == .basic ? "f(x)" : "123")
         case .equals: return .text("=")
         case .approximate: return .text("≈")
+        case .modeMenu: return .symbol(ModeMenuKey.systemImage)
         }
     }
 
@@ -159,7 +171,7 @@ struct KeyButton: View {
                 .minimumScaleFactor(0.6)
         case .symbol(let name):
             Image(systemName: name)
-                .font(.system(size: style == .navigation ? 16 : 20, weight: .medium))
+                .font(.system(size: style == .navigation ? 14 : 20, weight: .medium))
         case .math(let row):
             MathRowView(row: row, path: [], context: .display)
                 .environment(\.mathFontSize, 19)
@@ -168,14 +180,17 @@ struct KeyButton: View {
 
     private var font: Font {
         switch style {
-        case .number: return .system(size: 26, weight: .regular)
-        case .primary: return .system(size: 30, weight: .medium)
-        case .operation: return .system(size: 26, weight: .regular)
+        case .number: return .system(size: 30, weight: .regular)
+        case .primary: return .system(size: 34, weight: .medium)
+        case .operation: return .system(size: 32, weight: .medium)
         default: return .system(size: 18, weight: .medium)
         }
     }
 }
 
+/// Farben und Form wie beim Apple-Rechner: runde Tasten (bei breiteren Tasten Kapseln),
+/// Ziffern dunkelgrau, Funktionen mittelgrau, Operatoren orange, Löschen hellgrau.
+/// Gedrückt wird die Taste heller statt durchsichtig.
 struct KeyButtonStyle: ButtonStyle {
     let style: KeyStyle
     let isHighlighted: Bool
@@ -184,31 +199,67 @@ struct KeyButtonStyle: ButtonStyle {
         configuration.label
             .foregroundStyle(foreground)
             .background(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                Capsule(style: .continuous)
                     .fill(background)
-                    .opacity(configuration.isPressed ? 0.55 : 1)
+                    .brightness(configuration.isPressed ? KeyPalette.pressedBrightness : 0)
             )
-            .scaleEffect(configuration.isPressed ? 0.95 : 1)
-            .animation(.easeOut(duration: 0.08), value: configuration.isPressed)
+            .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
     }
 
     private var background: Color {
-        if isHighlighted { return Color.accentColor.opacity(0.35) }
+        if isHighlighted { return KeyPalette.highlighted }
         switch style {
-        case .number: return Color(.secondarySystemBackground)
-        case .operation: return Color.accentColor.opacity(0.18)
-        case .function, .navigation: return Color(.tertiarySystemFill)
-        case .primary: return Color.accentColor
-        case .destructive: return Color.red.opacity(0.15)
+        case .number: return KeyPalette.number
+        case .operation, .primary: return KeyPalette.operation
+        case .function: return KeyPalette.function
+        case .navigation: return KeyPalette.navigation
+        case .destructive: return KeyPalette.destructive
         }
     }
 
     private var foreground: Color {
+        if isHighlighted { return KeyPalette.operation }
         switch style {
-        case .primary: return .white
-        case .operation: return .accentColor
-        case .destructive: return .red
-        default: return .primary
+        case .destructive: return .black
+        default: return .white
         }
+    }
+}
+
+/// Tastenfarben, dem Apple-Rechner nachempfunden (Werte nach Augenmaß, keine Apple-Grafiken).
+enum KeyPalette {
+    static let number = Color(white: 0.2)
+    static let function = Color(white: 0.36)
+    static let navigation = Color(white: 0.13)
+    static let destructive = Color(white: 0.65)
+    static let highlighted = Color.white
+    /// Orange des Apple-Rechners (entspricht systemOrange im Dunkelmodus).
+    static let operation = Color(red: 1, green: 0.624, blue: 0.039)
+    static let pressedBrightness = 0.22
+}
+
+/// Modus-Taste unten links: öffnet das Menü der Bereiche (E-006).
+struct ModeMenuKey: View {
+    @Binding var mode: AppMode
+
+    /// Festes Menü-Symbol: das Rechner-Symbol (±) würde mit einer Vorzeichen-Taste verwechselt.
+    static let systemImage = "square.grid.2x2"
+
+    var body: some View {
+        Menu {
+            Picker("Bereich", selection: $mode) {
+                ForEach(AppMode.allCases) { item in
+                    Label(item.title, systemImage: item.systemImage).tag(item)
+                }
+            }
+        } label: {
+            Image(systemName: Self.systemImage)
+                .font(.system(size: 20, weight: .medium))
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Capsule(style: .continuous).fill(KeyPalette.function))
+                .contentShape(Capsule())
+        }
+        .accessibilityLabel(CalculatorKey.modeMenu.accessibilityLabel)
     }
 }

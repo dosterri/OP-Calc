@@ -24,7 +24,7 @@ struct DisplayView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             resultArea
-                .frame(minHeight: 56)
+                .frame(minHeight: 72)
         }
         .padding(.horizontal, 16)
         .padding(.top, 8)
@@ -82,13 +82,17 @@ struct ResultView: View {
         .accessibilityValue(plainText)
     }
 
+    /// Große, dünne Ziffern wie beim Apple-Rechner.
+    static let fontSize: CGFloat = 56
+
     private var content: some View {
         HStack(spacing: 10) {
             Text(prefix)
-                .font(.system(size: 30, weight: .light))
+                .font(.system(size: Self.fontSize * 0.7, weight: .light))
                 .foregroundStyle(.secondary)
             MathRowView(row: row, path: [], context: .display)
-                .environment(\.mathFontSize, 38)
+                .environment(\.mathFontSize, Self.fontSize)
+                .environment(\.mathFontWeight, .light)
                 .fixedSize()
         }
     }

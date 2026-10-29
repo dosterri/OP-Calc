@@ -22,7 +22,8 @@ struct FormulaEditorView: View {
                         .environment(\.mathFontSize, Self.fontSize)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 10)
-                        .frame(minWidth: outer.size.width, minHeight: outer.size.height, alignment: .leading)
+                        // Rechts unten, direkt über dem Ergebnis – wie beim Apple-Rechner.
+                        .frame(minWidth: outer.size.width, minHeight: outer.size.height, alignment: .bottomTrailing)
                         .overlayPreferenceValue(CaretAnchorKey.self) { anchors in
                             GeometryReader { inner in
                                 Color.clear
@@ -44,11 +45,8 @@ struct FormulaEditorView: View {
                 }
             }
         }
-        .background(
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .fill(Color(.secondarySystemBackground))
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        // Ohne Kartenhintergrund: die Formel steht wie beim Apple-Rechner direkt auf Schwarz.
+        .clipped()
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Formel")
         .accessibilityValue(editor.root.isEmpty ? "leer" : editor.root.linearText)

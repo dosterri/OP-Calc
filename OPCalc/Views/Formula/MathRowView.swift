@@ -71,6 +71,7 @@ struct MathItemView: View {
     let context: RenderContext
 
     @Environment(\.mathFontSize) private var fontSize
+    @Environment(\.mathFontWeight) private var fontWeight
 
     var body: some View {
         switch item.kind {
@@ -134,7 +135,7 @@ struct MathItemView: View {
 
     private func symbol(_ text: String, italic: Bool = false) -> some View {
         Text(text)
-            .font(.system(size: fontSize, weight: .regular))
+            .font(.system(size: fontSize, weight: fontWeight))
             .italic(italic)
             .monospacedDigit()
             .foregroundStyle(Color.primary)

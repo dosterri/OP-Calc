@@ -1,4 +1,7 @@
-# OP Calc
+# Rechner (Projekt „OP Calc“)
+
+Auf dem iPhone heißt die App „Rechner“ (E-004); Ordner, Target und Bundle-ID heißen weiter `OPCalc` bzw. `com.opcalc.app`.
+
 
 Wissenschaftlicher Rechner für iPhone mit **strukturiertem Formel-Editor**: Brüche, Wurzeln,
 Exponenten und Funktionen sind echte Bausteine, die man antippen und einzeln bearbeiten kann.
@@ -6,7 +9,8 @@ Es wird **exakt** gerechnet (3/4 + 1/3 = 13/12, √12 = 2√3, sin(π/6) = 1/2),
 
 - Native App in Swift + SwiftUI, iOS 17+, iPhone im Hochformat
 - 100 % lokal und offline, kein Konto, keine Werbung, keine externen Pakete
-- Verlauf mit SwiftData, Dark Mode, haptisches Feedback
+- Verlauf mit SwiftData, haptisches Feedback
+- Aussehen wie der Apple-Rechner (schwarz, runde Tasten, orange Operatoren), Modus-Taste unten links für die Bereiche (AK-01)
 
 ## Stand: Etappe 1 (MVP)
 

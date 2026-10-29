@@ -33,6 +33,8 @@ enum CalculatorKey: Hashable {
     case switchLayer
     case equals
     case approximate
+    /// Öffnet das Menü der Bereiche; die Tastatur zeigt dafür ein Menü statt einer Taste.
+    case modeMenu
 
     /// Tastenebenen der Tastatur.
     enum Layer {
@@ -52,7 +54,7 @@ enum CalculatorKey: Hashable {
     var returnsToBasicLayer: Bool {
         switch self {
         case .delete, .clear, .left, .right, .up, .down, .toggleSelection, .undo, .redo,
-             .toggleDecimal, .toggleAngleMode, .switchLayer:
+             .toggleDecimal, .toggleAngleMode, .switchLayer, .modeMenu:
             return false
         default:
             return true
@@ -97,6 +99,7 @@ enum CalculatorKey: Hashable {
         case .switchLayer: return "Tastenebene wechseln"
         case .equals: return "Ist gleich"
         case .approximate: return "Ungefähr, als Dezimalzahl"
+        case .modeMenu: return "Bereich wählen"
         }
     }
 }

@@ -22,10 +22,20 @@ private struct MathFontSizeKey: EnvironmentKey {
     static let defaultValue: CGFloat = 32
 }
 
+/// Strichstärke der Schrift; das Ergebnis wird dünn gesetzt wie beim Apple-Rechner.
+private struct MathFontWeightKey: EnvironmentKey {
+    static let defaultValue: Font.Weight = .regular
+}
+
 extension EnvironmentValues {
     var mathFontSize: CGFloat {
         get { self[MathFontSizeKey.self] }
         set { self[MathFontSizeKey.self] = newValue }
+    }
+
+    var mathFontWeight: Font.Weight {
+        get { self[MathFontWeightKey.self] }
+        set { self[MathFontWeightKey.self] = newValue }
     }
 }
 
