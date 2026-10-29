@@ -8,7 +8,19 @@ struct KeyboardView: View {
     let angleMode: AngleMode
     let isSelecting: Bool
     @Binding var mode: AppMode
+    /// Für Funktionen: diese Variablen bekommen eigene Tasten, „=“ wird zu „Fertig“ (✓).
+    var variables: [String]? = nil
     let onKey: (CalculatorKey) -> Void
+
+    /// Tasten, die beim Eingeben von Funktionen nichts bedeuten (Ans, S⇔D, ≈, Modus),
+    /// werden der Reihe nach durch Variablen und häufige Funktionen ersetzt.
+    private var substitutions: [CalculatorKey: CalculatorKey] {
+        guard let variables else { return [:] }
+        let replaced: [CalculatorKey] = [.ans, .toggleDecimal, .approximate, .modeMenu]
+        let fillers = variables.map { CalculatorKey.variable($0) }
+            + [.expPower, .function(.ln), .function(.sin), .function(.cos)]
+        return Dictionary(uniqueKeysWithValues: zip(replaced, fillers))
+    }
 
     private static let navigationKeys: [CalculatorKey] = [.left, .right, .up, .down, .toggleSelection, .undo, .redo]
 
@@ -73,12 +85,16 @@ struct KeyboardView: View {
     }
 
     private var rows: [[CalculatorKey]] {
-        layer == .basic ? Self.basicRows : Self.functionRows
+        let base = layer == .basic ? Self.basicRows : Self.functionRows
+        let map = substitutions
+        guard !map.isEmpty else { return base }
+        return base.map { row in row.map { map[$0] ?? $0 } }
     }
 
     private func style(for key: CalculatorKey) -> KeyStyle {
         switch key {
         case .digit, .decimalSeparator: return .number
+        case .variable: return .function
         case .op: return .operation
         case .equals: return .primary
         case .delete, .clear: return .destructive
@@ -95,6 +111,7 @@ struct KeyboardView: View {
         case .op(let o): return .text(o.symbol)
         case .constant(let c): return .text(c.symbol)
         case .ans: return .text("Ans")
+        case .variable(let name): return .math(MathRow([MathItem(.variable(name))]))
         case .fraction: return .math(MathRow([MathItem(.fraction)]))
         case .square: return .math(Self.power(base: "x", exponent: MathRow(linear: "2")))
         case .power: return .math(Self.power(base: "x", exponent: MathRow(linear: "y")))
@@ -120,7 +137,7 @@ struct KeyboardView: View {
         case .toggleDecimal: return .text("S⇔D")
         case .toggleAngleMode: return .text(angleMode == .radians ? "RAD" : "DEG")
         case .switchLayer: return .text(layer == .basic ? "f(x)" : "123")
-        case .equals: return .text("=")
+        case .equals: return variables == nil ? .text("=") : .symbol("checkmark")
         case .approximate: return .text("≈")
         case .modeMenu: return .symbol(ModeMenuKey.systemImage)
         }

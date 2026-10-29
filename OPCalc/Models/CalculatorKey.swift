@@ -7,6 +7,8 @@ enum CalculatorKey: Hashable {
     case op(MathOperator)
     case constant(MathConstant)
     case ans
+    /// Variable x, y, t oder y′ (Graph, 3D, DGL)
+    case variable(String)
     case fraction
     case square
     case power
@@ -72,6 +74,7 @@ enum CalculatorKey: Hashable {
         case .constant(.pi): return "Pi"
         case .constant(.e): return "Eulersche Zahl"
         case .ans: return "Letztes Ergebnis"
+        case .variable(let name): return name == "y′" ? "y Strich" : name
         case .fraction: return "Bruch"
         case .square: return "Quadrat"
         case .power: return "Potenz"

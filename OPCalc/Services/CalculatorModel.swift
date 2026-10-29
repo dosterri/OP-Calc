@@ -51,6 +51,8 @@ final class CalculatorModel {
             edit { $0.insert(MathItem(.constant(c))); return true }
         case .ans:
             edit { $0.insert(MathItem(.ans)); return true }
+        case .variable(let name):
+            edit { $0.insert(MathItem(.variable(name))); return true }
         case .factorial:
             edit { $0.insert(MathItem(.factorial)); return true }
         case .fraction:
@@ -140,6 +142,27 @@ final class CalculatorModel {
         isSelecting = false
         lastEditWasDigit = false
         feedbackTick += 1
+    }
+
+    /// Formel zum Bearbeiten vorgeben (Funktionen im Graph, Zellen im Gleichungslöser).
+    /// Startet ohne Undo-Verlauf, weil es eine neue Bearbeitung ist.
+    func startEditing(_ formula: MathRow) {
+        editor = FormulaEditor(root: formula)
+        undoStack.removeAll()
+        redoStack.removeAll()
+        result = nil
+        errorMessage = nil
+        resultIsStale = false
+        isSelecting = false
+        lastEditWasDigit = false
+        layer = .basic
+    }
+
+    /// Fehlermeldung von außen anzeigen (z. B. „Formel unvollständig“ beim Übernehmen).
+    func showError(_ message: String, at path: CursorPath?) {
+        errorMessage = message
+        if let path { editor.setCursor(path) }
+        fail()
     }
 
     /// Rechnung aus dem Verlauf wieder in den Editor laden (rückgängig machbar).

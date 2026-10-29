@@ -8,6 +8,7 @@ struct OPCalcApp: App {
     init() {
         let schema = Schema([
             CalculationRecord.self,
+            GraphFunction.self,
         ])
         // Rein lokale Speicherung – kein iCloud-Sync, keine Registrierung.
         let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false, cloudKitDatabase: .none)

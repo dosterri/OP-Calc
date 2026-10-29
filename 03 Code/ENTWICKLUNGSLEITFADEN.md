@@ -52,6 +52,7 @@
 | Regex mit `\s`, `\d` in normalem Swift-String | Ungültiges Escape → Compilerfehler. Raw-String verwenden: `#"apikey=[^&\s"]*"#` (R01). |
 | Mehrzeiliger Getter nach Einfügen einer Zeile | Implizites `return` gilt nur bei **einem** Ausdruck – nach `_ = x` muss `return` davor (R01). |
 | APIs aus einem neueren SDK (z. B. `MKReverseGeocodingRequest`, iOS 26) | `#available` reicht nur bei passendem SDK; zusätzlich `#if compiler(>=6.2)`, damit ein älteres Xcode in der CI weiter baut (R01). |
+| Lange Arrays aus Bruch-Literalen (`[19372.0 / 6561, -25360.0 / 2187, …]`) direkt im Ausdruck – „unable to type-check this expression in reasonable time“ (R02, ODESolver) | Als `private static let a5: [Double] = [...]` mit ausgeschriebenem Typ ablegen; mehrteilige Rechnungen mit Tupeln in benannte `let x: Double = …` zerlegen. |
 | `"\r\n"` in Swift ist **ein** `Character` | Beim Zeilen-Parsen `Character.isNewline` statt Vergleich mit `"\n"` verwenden (CSV aus Windows/Excel). |
 | Timer-Text (`Text(date, style: .timer)`) in Widgets/Live Activities | Nimmt sonst die ganze Zeilenbreite ein: feste Breite per `.frame(width:alignment:)`. Nach Ablauf eines Datums zählt `.timer` automatisch wieder hoch; mit `staleDate` lässt sich die Darstellung (z. B. „+“) umschalten. |
 | `.fullScreenCover(isPresented: Binding(get: { Singleton.shared.x }, …))` – nichts erscheint (AK-34) | Der Getter einer Bindung läuft nicht im `body`, die Ansicht beobachtet `x` dann nicht. Den Wert im `body` lesen und als Wert weitergeben (`TourPresentationHost(isShown: tour.isPresented)`). |
