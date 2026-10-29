@@ -12,11 +12,10 @@ Die App heißt auf dem iPhone „Rechner“ (E-004) und sieht aus wie der Apple-
 | XCTest | 151 grün (davon 48 neu für Graph, Löser, Stochastik, DGL, 3D) | Test |
 | Review-Agent über alle neuen Dateien | 13 Befunde, alle behoben, 5 Regressionstests | Verifikation (Lesen, Nachrechnen) |
 | Alle Bereiche im Simulator iPhone 18 Pro | bedient, Ergebnisse stimmen mit Handrechnung | Validierung (Simulator) |
-| iPhone, iPhone SE, 3D-Bildrate | offen (OP-002, OP-004, OP-007) | Validierung |
+| iPhone 16 (Ricco) | läuft, freigegeben 2026-10-29 12:04; iPhone SE und 3D-Bildrate nicht gemessen | Validierung |
 
 ## Technik
 Swift 5, SwiftUI, SwiftData, iOS 17+, iPhone Hochformat, fest dunkel. Bundle-ID `com.opcalc.app`, Target `OPCalc`. Neues SwiftData-Modell `GraphFunction` (Graph- und 3D-Funktionen). Rechenkern ohne SwiftUI: `Services/Analysis` (numerische Auswertung, symbolische Ableitung, Nullstellen, Integral), `Services/Solvers` (LGS, Polynome, Stochastik, Statistik, DGL, 3D-Gitter). Build: `03 Code/tools/mac/mac_build.sh`.
 
 ## Nächste Schritte
-1. Per Kabel aufs iPhone, alle Bereiche anfassen (OP-002, OP-004, OP-007), dann `entwicklung` → `main`.
-2. Ricco: E-008 bestätigen (OP-008), fehlende Kann-Punkte (OP-006) und Zusatzideen ID-01…ID-16 (OP-005) wählen.
+1. Ricco: E-008 bestätigen (OP-008), fehlende Kann-Punkte (OP-006) und Zusatzideen ID-01…ID-16 (OP-005) wählen.
