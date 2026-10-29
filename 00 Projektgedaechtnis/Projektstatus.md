@@ -1,23 +1,23 @@
-# Projektstatus OP Calc
+# Projektstatus „Rechner“ (Projekt OP Calc)
 
-> Stand: 2026-10-28 19:17 nach R01 · ≤ 80 Zeilen, zum Rundenabschluss neu schreiben (M-G02).
+> Stand: 2026-10-29 10:10 nach R02 · ≤ 80 Zeilen, zum Rundenabschluss neu schreiben (M-G02).
 
 ## Kurz
-Etappe 1 (strukturierter Formel-Editor, exakte Arithmetik, Verlauf) ist programmiert, ~4 600 Zeilen + XCTest. Seit R01 nach LeanGymLog-Methode organisiert. **Am Mac noch nicht gebaut** (ob der frühere CI-Lauf je grün war, ist unbekannt).
+Wissenschaftlicher Rechner mit Formel-Editor und exakter Arithmetik. Seit R02 heißt die App auf dem iPhone „Rechner“ (E-004) und sieht aus wie der Apple-Rechner (E-005, AK-01). Ausbau geplant: Graph 2D → Gleichungen/LGS → Stochastik → DGL → Graph 3D (E-007, AK-02…AK-06). Bereiche wählt man über die Modus-Taste unten links (E-006).
 
 ## Prüfstand
 | Prüfung | Ergebnis | Nachweisart |
 |---|---|---|
-| Kompilieren / XCTest | offen (OP-001) | – |
-| Statische Durchsicht, ganzer Code | 2 Absturzstellen behoben, 3 kleine Befunde offen (R01-Protokoll) | Verifikation (Lesen) |
-| BigInt-Division (Python-Nachbau) | 199 225 Zufallsfälle ohne Abweichung | Test |
-| `lint.py` / `pbx_check.py` | 0 Auffälligkeiten / OK | Verifikation |
+| `mac_build.sh alles` (sim, tests, geraet) | grün (R02) | Verifikation |
+| XCTest | 103 grün | Test |
+| BigInt-Division (Python-Nachbau) | 199 225 Zufallsfälle ohne Abweichung (R01) | Test |
+| Apple-Look, Modus-Menü | Simulator iPhone 18 Pro geprüft; iPhone SE und echtes iPhone offen (OP-004) | Validierung (Simulator) |
 | iPhone | offen (OP-002) | Validierung |
 
 ## Technik
-Swift 5, SwiftUI, SwiftData, iOS 17+, iPhone Hochformat, Bundle-ID `com.opcalc.app`, kein Team in der Projektdatei (kommt beim Bauen aus `~/.leangymlog-team-id`). Build: `03 Code/tools/mac/mac_build.sh`.
+Swift 5, SwiftUI, SwiftData, iOS 17+, iPhone Hochformat, fest dunkel. Bundle-ID `com.opcalc.app`, Target `OPCalc` (bleiben trotz neuem Namen). Build: `03 Code/tools/mac/mac_build.sh`.
 
 ## Nächste Schritte
-1. Am Mac bauen und testen (OP-001).
-2. Per Kabel aufs iPhone (OP-002).
-3. Ricco: nächste Etappe wählen – LGS-Löser, Plotter, Windows (OP-003).
+1. AK-02 Graph 2D (`03 Code/aufgaben/AK-02_Graph_2D.md`).
+2. Per Kabel aufs iPhone, Look ansehen (OP-002, OP-004).
+3. Ricco: Zusatzideen ID-01…ID-16 wählen (OP-005).
