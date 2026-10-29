@@ -23,15 +23,40 @@ Ricco 2026-10-29: „Kannst du die App so anpassen, dass sie aussieht wie der Ap
 - Nicht geprüft: kleiner Bildschirm (iPhone SE), echtes iPhone (OP-004). Das Menü enthält bis AK-02 nur „Rechner“.
 - Git-Stand: Zweig `entwicklung`, Commit `AK-01: Apple-Look, Name Rechner, Modus-Menü`.
 
+
+### 2 · AK-02 bis AK-06 ohne Rückfragen (2026-10-29 11:16)
+- Auftrag: Ricco 2026-10-29: „Ja, AK-02 starten“, dann „Mach alle AKs ohne Rückfragen einfach fertig“. Offene Detailfragen nach Empfehlung entschieden → E-008 (vorläufig).
+
+### Ergebnis AK-02 bis AK-06 (Claude Code, 2026-10-29 11:16)
+- Umgesetzt:
+  - AK-02 Graph 2D: Variablen-Tasten, `NumericEvaluator`, symbolische Ableitung (`Derivative.swift`, auch Gradmaß), Nullstellen (Brent + Berührstellen), Hoch-/Tief-/Sattel-/Wendepunkte, Schnittpunkte, y-Achsenabschnitt, Wert, Integral mit Fläche (Gauß-Kronrod), Ableitung zeichnen, Spur, Pan/Zoom mit gleichem Maßstab; Funktionen als SwiftData-Modell `GraphFunction` (Schema ergänzt, alle Felder mit Standardwert).
+  - AK-03 Gleichungen: LGS bis 6×6 exakt (Gauß-Jordan über `Rational`, sonst Double mit Pivotsuche; keine/unendlich viele Lösungen mit Parametern), Polynom bis Grad 6 (Teilertest + Grad 2 mit √ exakt, Rest numerisch, Anzahl nicht reeller Lösungen), beliebige Gleichung numerisch, „Im Graph zeigen“.
+  - AK-04 Stochastik: Binomial (exakt bis n = 200), Normal (inkl. Quantil), Poisson, hypergeometrisch (exakt bis N = 1000), geometrisch; Säulen-/Glockendiagramm; Kombinatorik (nCr, nPr, n!, nᵏ); Statistik (Kennzahlen, Quartile nach A-001, Boxplot), Regression linear/quadratisch/exponentiell mit Diagramm und „Im Graph zeigen“.
+  - AK-05 DGL: Dormand-Prince 5(4); 1. Ordnung mit Richtungsfeld, 2. Ordnung, System mit Phasenbild; Startpunkt per Antippen; Wert an einer Stelle; Abbruchmeldung bei Polstellen.
+  - AK-06 Graph 3D: eigene Projektion in `Canvas`, bis 3 Flächen, Höhenfarben, Schattierung, Drehen/Zoomen, Bereich ±1…±50.
+- Dateien: neu `OPCalc/Services/Analysis/*`, `OPCalc/Services/Solvers/*`, `OPCalc/Views/{Graph,Graph3D,Equations,Stochastics,Differential,Common}/*`, `OPCalc/Models/{GraphFunction,WorkspaceState}.swift`, `OPCalcTests/{AnalysisTests,SolverTests}.swift`; geändert `AppMode`, `CalculatorKey`, `CalculatorModel`, `KeyboardView`, `RootView`, `OPCalcApp`, README, Leitfaden §6.
+- Tests/Build: `mac_build.sh alles` grün, 151 XCTests grün (Verifikation/Test). Simulator iPhone 18 Pro: alle sechs Bereiche bedient – x³−3x mit Hoch-/Tiefpunkt, x² − 2 → ±√2 exakt, B(10; 0,5) P(X ≤ 3) = 11/64, y′ = x − y mit Richtungsfeld, Fläche x² − y² gedreht (Validierung im Simulator).
+- Review-Agent (alle Aufrufstellen gegen Deklarationen, Rechenkern nachgerechnet): 13 Befunde, behoben: Absturz bei geometrischer Verteilung mit p < 10⁻¹⁸, ∫√x / Halbkreis / ∫ln x lieferten „existiert nicht“, DGL meldete am Bereichsende fälschlich „bricht ab“, DGL wurde bei jedem Verschiebe-Bild neu gelöst, quadratische Regression mit Jahreszahlen, Poisson-Summe bei großem λ abgeschnitten, Teilertest-Explosion, Int-Umwandlungen ohne Absicherung, riesige nᵏ, 3D-z-Bereich pro Bild sortiert, Extremum-Art nur über linke Ableitung, Winkelmaß bei „t bis“. 5 neue Regressionstests.
+- Texte (M-C11): Bereichsnamen, „Analyse“, Menüeinträge der Analyse, Hinweise („Tippe auf +, um eine Funktion einzugeben.“, „Leere Felder zählen als 0. Brüche und Wurzeln sind erlaubt.“, „Tippe in den Graphen, um den Startpunkt zu setzen.“), Fehlermeldungen der Eingaben.
+- Neue Annahmen: A-001 (Quartile), A-002 (Abtastung), A-003 (DGL-Toleranz).
+- Abweichungen von den Karten (Kann/Soll, nicht umgesetzt → OP-006): nCr/nPr nur im Bereich Stochastik, nicht als Rechnertaste (bräuchte neuen Baustein mit zwei Feldern); LGS-Lösungsweg; Wertetabelle; Parameter-Schieberegler; exakte DGL-Lösung; 3D-Punkt antippen, Höhenlinien, kritische Punkte.
+- Nicht geprüft: echtes iPhone, iPhone SE, Bildrate beim 3D-Drehen auf dem Gerät (AK-06 K3).
+- Git-Stand: Zweig `entwicklung`, Commit `AK-02–AK-06: …`.
+
+## Übergabeblock an R03 (ersetzt den obigen)
+- Stand: AK-01 bis AK-06 fertig auf `entwicklung`, Build und 151 Tests grün, im Simulator bedient.
+- Nächster Schritt: per Kabel aufs iPhone, alle Bereiche anfassen (OP-002, OP-004, OP-007); danach `entwicklung` nach `main`.
+- Offene Fragen an Ricco: E-008 bestätigen; OP-005 (Zusatzideen); OP-006 (fehlende Kann-Punkte nachziehen?).
+
 ## Zusammenfassung
-- Ausbau in sechs Karten geplant und von Ricco in der Reihenfolge freigegeben; AK-01 fertig und im Simulator geprüft.
+- Ausbau in sechs Karten geplant, freigegeben und vollständig umgesetzt (AK-01…AK-06); Review-Befunde behoben; Simulator geprüft, iPhone offen.
 
 ## PDCA
 | | KI | Ricco |
 |---|---|---|
 | Was lief gut | Entscheidungen vor dem Code gebündelt abgefragt; Build beim ersten Lauf grün | – |
-| Was lief schlecht | Erstes Modus-Symbol (±) erst auf dem Bildschirmfoto als missverständlich erkannt | – |
-| Maßnahme | Bei neuen Tasten Symbol gegen bestehende Tastenbedeutungen prüfen (kein neuer PM-Eintrag, Einzelfall) | – |
+| Was lief schlecht | Erstes Modus-Symbol (±) erst auf dem Bildschirmfoto als missverständlich erkannt; ein Testerwartungswert falsch von Hand gerechnet; Review fand Absturz und falsche Ergebnisse bei Randfällen, die Tests nicht abdeckten | – |
+| Maßnahme | PM-01: Bei numerischen Verfahren immer Randfälle testen (Wurzel-/Log-Ränder, Intervallende, extreme Parameter, Int-Umwandlung) | – |
 
 ## Manuelle Aufgaben für Ricco
 1. Am Mac per Kabel installieren und ansehen: `APP_GERAET=<Kennung> APP_INSTALLIEREN=ja bash "03 Code/tools/mac/mac_build.sh" signiert` (OP-002, OP-004).

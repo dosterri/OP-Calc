@@ -1,11 +1,10 @@
 # AKTUELL – Einstieg für „Start“
 
-> Stand: 2026-10-29 10:10 (R02, Claude Code)
+> Stand: 2026-10-29 11:16 (R02, Claude Code)
 
 ## Stand
-App heißt auf dem iPhone „Rechner“ (E-004) und sieht aus wie der Apple-Rechner, mit Formel-Editor (AK-01 fertig, Build + Tests grün, im Simulator geprüft). Ausbau geplant in AK-02…AK-06 (E-007).
+AK-01 bis AK-06 sind fertig (Apple-Look, Name „Rechner“, Graph 2D, Gleichungen, Stochastik, DGL, Graph 3D). Build und 151 Tests grün, alle Bereiche im Simulator bedient. Auf dem iPhone noch nicht geprüft.
 
 ## Als Nächstes (Reihenfolge)
-1. **AK-02 Graph 2D** umsetzen: `03 Code/aufgaben/AK-02_Graph_2D.md` (vorher die zwei Fragen aus §5 an Ricco). Danach erscheint „Graph“ im Modus-Menü (`OPCalc/Models/AppMode.swift`, `App/RootView.swift`).
-2. Danach AK-03 Gleichungen → AK-04 Stochastik → AK-05 DGL → AK-06 Graph 3D.
-3. Wenn Ricco am Mac ist: per Kabel aufs iPhone (OP-002, OP-004).
+1. **Am Mac, iPhone per Kabel:** `APP_GERAET=<Kennung> APP_INSTALLIEREN=ja bash "03 Code/tools/mac/mac_build.sh" signiert`, dann jeden Bereich anfassen (OP-002, OP-004, OP-007). Läuft alles: `entwicklung` nach `main` mergen.
+2. Ricco fragen: E-008 bestätigen (OP-008), welche Kann-Punkte aus OP-006 und welche Zusatzideen ID-01…ID-16 (OP-005) als nächste Karte kommen.

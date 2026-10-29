@@ -1,6 +1,6 @@
 # Anforderungen
 
-> Master-Datei. Stand: 2026-10-29 10:01 (R02). Etappe 1 aus `README.md`, Ideen aus `OP Calc.txt` und Riccos Auftrag vom 2026-10-29.
+> Master-Datei. Stand: 2026-10-29 11:16 (R02). Etappe 1 aus `README.md`, Ideen aus `OP Calc.txt` und Riccos Auftrag vom 2026-10-29.
 
 | ID | Anforderung | Stand |
 |---|---|---|
@@ -8,14 +8,14 @@
 | US-002 | Exakt rechnen (Brüche, √, π, e), Näherung erst mit „≈“; Umschalten exakt/dezimal | Etappe 1 |
 | US-003 | Bearbeiten ohne Neuanfang: Markieren, Undo/Redo, Bruch auflösen statt löschen | Etappe 1 |
 | US-004 | Verlauf: jede Rechnung gespeichert und wieder bearbeitbar | Etappe 1 |
-| US-005 | LGS-Löser (n×n, Gauß-Jordan, exakt mit Brüchen, auf Wunsch Lösungsweg) | AK-03 |
-| US-006 | Graph 2D: mehrere Funktionen, Verschieben/Zoomen, Nullstellen, Extrema, Wendestellen, Schnittpunkte, Ableitung, Integral (Fläche) | AK-02 |
+| US-005 | LGS-Löser (n×n, Gauß-Jordan, exakt mit Brüchen, auf Wunsch Lösungsweg) | AK-03 umgesetzt (R02) |
+| US-006 | Graph 2D: mehrere Funktionen, Verschieben/Zoomen, Nullstellen, Extrema, Wendestellen, Schnittpunkte, Ableitung, Integral (Fläche) | AK-02 umgesetzt (R02) |
 | US-007 | Windows-Fassung | Idee (E-002) |
-| US-008 | Aussehen wie der Apple-Rechner, Editor bleibt (E-005); Name „Rechner“ (E-004); Modus-Menü (E-006) | AK-01 |
-| US-009 | Gleichungen: Polynom bis Grad 4 exakt bzw. Grad n numerisch, beliebige Gleichung f(x) = g(x) numerisch | AK-03 |
-| US-010 | Stochastik: nCr, nPr, Binomial-, Normal-, Poisson-, hypergeometrische Verteilung (P(X=k), P(X≤k), Intervall), Liste → Mittelwert, Median, Standardabweichung, Quartile, lineare Regression | AK-04 |
-| US-011 | DGL: y′ = f(x, y) und y″ = f(x, y, y′) mit Anfangswert numerisch (Runge-Kutta 4), Richtungsfeld, Lösungskurve im Graph | AK-05 |
-| US-012 | Graph 3D: z = f(x, y) als Fläche, drehen und zoomen | AK-06 |
+| US-008 | Aussehen wie der Apple-Rechner, Editor bleibt (E-005); Name „Rechner“ (E-004); Modus-Menü (E-006) | AK-01 umgesetzt (R02) |
+| US-009 | Gleichungen: Polynom bis Grad 4 exakt bzw. Grad n numerisch, beliebige Gleichung f(x) = g(x) numerisch | AK-03 umgesetzt (R02) |
+| US-010 | Stochastik: nCr, nPr, Binomial-, Normal-, Poisson-, hypergeometrische Verteilung (P(X=k), P(X≤k), Intervall), Liste → Mittelwert, Median, Standardabweichung, Quartile, lineare Regression | AK-04 umgesetzt (R02) |
+| US-011 | DGL: y′ = f(x, y) und y″ = f(x, y, y′) mit Anfangswert numerisch (Runge-Kutta 4), Richtungsfeld, Lösungskurve im Graph | AK-05 umgesetzt (R02) |
+| US-012 | Graph 3D: z = f(x, y) als Fläche, drehen und zoomen | AK-06 umgesetzt (R02) |
 | NF-01 | Lokal und offline, kein Konto, keine Werbung, keine externen Pakete | gilt |
 | NF-02 | iPhone Hochformat, haptisches Feedback; Darstellung dunkel wie der Apple-Rechner (E-005) | Etappe 1 / AK-01 |
 
